@@ -444,7 +444,7 @@ autosummary_context.update(class_extention_context)
 coverage_statistics_to_stdout = True
 coverage_show_missing_items = True
 coverage_modules = [
-    "fitzzftw.devtools.testinfra",
+    "fitzzftw.devtools",
 ]
 
 # NOTE - This list uses REGULAR EXPRESSIONS, not shell-style globs.
