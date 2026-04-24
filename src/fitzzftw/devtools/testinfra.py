@@ -1,3 +1,15 @@
+# File: src/fitzzftw/devtools/testinfra.py
+# Author: Fitzz TeXnik Welt
+# Email: FitzzTeXnikWelt@t-online.de
+# License: LGPLv2 or above
+"""
+testinfra
+===============================
+
+
+Modul testinfra documentation
+"""
+
 import os
 import shutil
 from pathlib import Path
@@ -282,48 +294,35 @@ class TestHomeEnvironment:
         
 
 
+# Hier den Code einfügen
 
-
-if __name__ == "__main__":  # pragma: no cover
-    from doctest import testfile, FAIL_FAST  # noqa: I001
-    from pathlib import Path
-    import sys
-
-    # Adds the project's root directory (the module source directory)
-    # to the beginning of sys.path.
-    project_root = Path(__file__).resolve().parent.parent
-    print(project_root)
-    sys.path.insert(0, str(project_root))
+if __name__ == "__main__": # pragma: no cover
+    from doctest import FAIL_FAST, testfile
+    
     be_verbose = False
     be_verbose = True
     option_flags = 0
     option_flags = FAIL_FAST
-    testfilesbasedir = Path("../../../doc/source/devel")
     test_sum = 0
     test_failed = 0
-    dt_file = str(testfilesbasedir / "get_started_ftw_testinfra.rst")
-    # dt_file = str(testfilesbasedir / "temp_test.rst")
-    # dt_file = str(testfilesbasedir / "test_parser_fix.rst")
-    # dt_file = str(testfilesbasedir / "parser_validation.txt")
-    print(dt_file)
-    doctestresult = testfile(
-        dt_file,
-        # "../../doc/source/devel/get_started_ftw_patch.rst",
-        optionflags=option_flags,
-        verbose=be_verbose,
-    )
-    test_failed += doctestresult.failed
-    test_sum += doctestresult.attempted
-
-    # doctestresult = testfile(
-    #     str(testfilesbasedir / "ftw_patch.rst"),
-    #     optionflags=option_flags,
-    #     verbose=be_verbose,
-    # )
-    # test_failed += doctestresult.failed
-    # test_sum += doctestresult.failed
-
-    if test_failed == 0:
-        print(f"DocTests passed without errors, {test_sum} tests.")
+    
+    # Pfad zu den dokumentierenden Tests
+    testfiles_dir = Path(__file__).parents[3] / "doc/source/devel"
+    test_file = testfiles_dir / "get_started_testinfra.rst"
+    
+    if test_file.exists():
+        print(f"--- Running Doctest for {test_file.name} ---")
+        doctestresult = testfile(
+            str(test_file),
+            module_relative=False,
+            verbose=be_verbose,
+            optionflags=option_flags,
+        )
+        test_failed += doctestresult.failed
+        test_sum += doctestresult.attempted
+        if test_failed == 0:
+            print(f"\nDocTests passed without errors, {test_sum} tests.")
+        else:
+            print(f"\nDocTests failed: {test_failed} tests.")
     else:
-        print(f"DocTests failed: {test_failed} tests.")
+        print(f"⚠️ Warning: Test file {test_file.name} not found.")

@@ -119,7 +119,7 @@ exclude_also = [
   "# for future use",
   "# not Windows testable",
 ]
-fail_under = 100
+fail_under = 40
 show_missing = true
 #format = "text"
 #

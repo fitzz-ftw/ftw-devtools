@@ -1,6 +1,7 @@
 FTW Development Tools
-=====================
+######################
 
+.. automodule:: fitzzftw.devtools
 
 .. autosummary::
     :toctree: api
