@@ -287,7 +287,6 @@ toc_object_entries_show_parents = "hide"
 intersphinx_mapping = {
     "python": (f"https://docs.python.org/{sys.version_info.major}.{sys.version_info.minor}", None),
     "platformdirs": ("https://platformdirs.readthedocs.io/en/latest/", None),
-    # "crygraph":("https://cryptography.io/en/latest/", None),
 }
 
 #SECTION - Options for ePub output -------------------------------------------------
@@ -410,7 +409,10 @@ autosummary_imported_members = False
 autosummary_ignore_module_all = True
 autosummary_context = {}
 
-inherit_diagramm: list[str] = []
+inherit_diagramm: list[str] = [
+    "fitzzftw.devtools.git_shortcuts.cli_parser",
+    "fitzzftw.devtools.git_shortcuts.protocols",
+]
 exclude_inherit_diagramm: list[str] = []
 
 class_extention_context = {

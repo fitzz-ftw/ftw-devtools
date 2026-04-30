@@ -121,6 +121,8 @@ exclude_also = [
   "if *__name__ *=*[\"']__main__.*",
   "# for future use",
   "# not Windows testable",
+  "# py 3.11 only no cover",
+  "# not py 3.11 no cover"
 ]
 fail_under = 40
 show_missing = true

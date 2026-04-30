@@ -24,24 +24,19 @@ def prog_ftwchangelog(argv: list[str] | None = None) -> int:
     Generates a formatted git log since the last tag or a specific reference.
     """
     try:
-        # Initialisierung des spezialisierten Parsers
         parser = get_changelog_parser()
         args = parser.parse_args(argv)
 
-        # Bestimmung der Start-Referenz (Entweder User-Input oder automatischer Latest Tag)
         start_ref = args.since if args.since else get_latest_tag(git_exec=args.git_path)
 
-        # Abruf der Log-Statistiken über die git_commands
         log_data = get_log_stat(start_ref=start_ref, end_ref=args.branch, git_exec=args.git_path)
 
-        # Ausgabe der Resultate
         print(f"--- Git Changes since {start_ref} ---")
         print(log_data)
 
         return 0
 
     except Exception as e:
-        # Sauberes Fehler-Handling ohne Traceback-Spam für den User
         print(f"Error: {e}", file=sys.stderr)
         return 1
 
@@ -60,8 +55,8 @@ if __name__ == "__main__":  # pragma: no cover
     test_failed = 0
 
     # Pfad zu den dokumentierenden Tests
-    testfiles_dir = Path(__file__).parents[3] / "doc/source/devel"
-    test_file = testfiles_dir / "get_started_programms.rst"
+    testfiles_dir = Path(__file__).parents[4] / "doc/source/devel"
+    test_file = testfiles_dir / "get_started_git_sc_programms.rst"
 
     if test_file.exists():
         print(f"--- Running Doctest for {test_file.name} ---")

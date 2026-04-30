@@ -62,7 +62,7 @@ class GitBaseParser(ArgumentParser):
         # Validierung: Existiert git und ist es ausführbar?
         git_exec = parsed_args.git_path
         if not shutil.which(git_exec):
-            self.error(f"Git executable '{git_exec}' not found or not executable.")
+            raise ArgumentError(None,f"Git executable '{git_exec}' not found or not executable.")
 
         return cast(GitBaseCliProtocol, parsed_args)
 
@@ -77,7 +77,7 @@ class GitBaseParser(ArgumentParser):
         """
         if sys.version_info[:2] == (3, 11):  # py 3.11 only no cover
             raise ArgumentError(None, message)
-        super().error(message)  # not py 3.11 no·‌cover
+        super().error(message)  # not py 3.11 no cover
 
     # !METHODE - error
     # METHODE - exit
@@ -179,8 +179,8 @@ if __name__ == "__main__":  # pragma: no cover
     test_failed = 0
 
     # Pfad zu den dokumentierenden Tests
-    testfiles_dir = Path(__file__).parents[3] / "doc/source/devel"
-    test_file = testfiles_dir / "get_started_cli_parser.rst"
+    testfiles_dir = Path(__file__).parents[4] / "doc/source/devel"
+    test_file = testfiles_dir / "get_started_git_sc_cli_parser.rst"
 
     if test_file.exists():
         print(f"--- Running Doctest for {test_file.name} ---")

@@ -59,7 +59,8 @@ def get_log_stat(start_ref: str, end_ref: str = "HEAD", git_exec: str = "git") -
     :param git_exec: Path to the git binary.
     :return: The git log output including file statistics.
     """
-    return run_git_command(["log", f"{start_ref}..{end_ref}", "--stat"], git_exec=git_exec)
+    return run_git_command(["log", f"{start_ref}..{end_ref}", 
+                            "--format=commit: %h %d%n%B"], git_exec=git_exec)
 
 
 # !FUNCTION - get_log_stat
@@ -76,8 +77,8 @@ if __name__ == "__main__":  # pragma: no cover
     test_failed = 0
 
     # Pfad zu den dokumentierenden Tests
-    testfiles_dir = Path(__file__).parents[3] / "doc/source/devel"
-    test_file = testfiles_dir / "get_started_git_commands.rst"
+    testfiles_dir = Path(__file__).parents[4] / "doc/source/devel"
+    test_file = testfiles_dir / "get_started_git_sc_git_commands.rst"
 
     if test_file.exists():
         print(f"--- Running Doctest for {test_file.name} ---")
