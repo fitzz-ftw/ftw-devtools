@@ -3,10 +3,10 @@
 # Email: FitzzTeXnikWelt@t-online.de
 # License: LGPLv2 or above
 """
-git_commands
+cli_parser
 ===============================
 
-Low-level git command execution with flexible executable path. (rw)
+CLI argument parsing with a robust base class for git tools. (rw)
 """
 
 import shutil
@@ -47,7 +47,7 @@ class GitBaseParser(ArgumentParser):
             "--git-path",
             dest="git_path",
             type=str,
-            help="Path to the git executable (defaults to 'git').",
+            help="Path to the git executable (defaults: %(default)s).",
             default="git",
         )
 
@@ -121,17 +121,19 @@ class ChangelogCliParser(GitBaseParser):
         """
         super()._setup_parser()
         self.add_argument(
+            "-s",
             "--since",
             dest="since",
             type=str,
-            help="Starting tag or commit hash (defaults to latest tag).",
-            default=None,
+            default="last tag",
+            help="Starting tag or commit hash (defaults: %(default)s).",
         )
         self.add_argument(
+            "-b",
             "--branch",
             dest="branch",
             type=str,
-            help="The branch or reference to compare (default: development).",
+            help="The branch or reference to compare (default: %(default)s).",
             default="development",
         )
 
@@ -142,7 +144,10 @@ class ChangelogCliParser(GitBaseParser):
         """
         Parse and cast to the specific Changelog protocol. (rw)
         """
-        return cast(ChangelogCliProtocol, super().parse_args(args, namespace))
+        ret = cast(ChangelogCliProtocol, super().parse_args(args, namespace))
+        if ret.since == "last tag":
+            ret.since =""
+        return ret
 
     # !METHODE - parse_args
 
@@ -153,7 +158,10 @@ class ChangelogCliParser(GitBaseParser):
 # FUNCTION - get_changelog_parser
 def get_changelog_parser() -> ChangelogCliParser:
     """
-    Helper function to get a configured changelog parser instance.
+    Helper function to get a configured changelog parser instance. (rw)
+
+    Note: This function is required by the sphinx-argparse extension
+    to automatically generate CLI documentation.
     """
     return ChangelogCliParser()
 

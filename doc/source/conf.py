@@ -222,12 +222,13 @@ language = "en"
 
 # -- General configuration ---------------------------------------------------
 extensions = [
-    "sphinx.ext.autodoc",       # Zuerst die Basis
+    "sphinx.ext.autodoc",  # Zuerst die Basis
     "sphinx.ext.intersphinx",  # Wichtig für Cross-Refs
     "sphinx.ext.autosummary",
-    "myst_parser",             # Falls du Markdown nutzt
-    "sphinxarg.ext",           # Das "tote Pferd" erst jetzt laden
+    "myst_parser",  # Falls du Markdown nutzt
+    "sphinxarg.ext",  # Das "tote Pferd" erst jetzt laden
     "autoclasstoc",
+    "sphinxarg.ext",
     "sphinx.ext.coverage",
     "sphinx.ext.viewcode",
     "sphinx_copybutton",

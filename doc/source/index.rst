@@ -10,6 +10,12 @@ compromising the host system.
 
 .. toctree::
    :maxdepth: 2
+   :caption: User Manuals
+
+   user/git_shortcuts
+
+.. toctree::
+   :maxdepth: 2
    :caption: Getting Started:
 
    index_get_started

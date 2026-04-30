@@ -51,6 +51,9 @@ Repository = "https://github.com/fitzz-ftw/ftw-devtools.git"
 Issues = "https://github.com/fitzz-ftw/ftw-devtools/issues"
 Changelog = "https://github.com/fitzz-ftw/ftw-devtools/blob/main/CHANGELOG.md"
 
+[project.scripts]
+ftwchangelog = "fitzzftw.devtools.git_shortcuts.programms:prog_ftwchangelog"
+
 [project.optional-dependencies]
 doc = [
   "sphinx < 9.0.0",

@@ -47,7 +47,7 @@ def prog_ftwchangelog(argv: list[str] | None = None) -> int:
 
 
 # !FUNCTION - prog_ftwchangelog
-# Hier den Code einfügen
+
 
 if __name__ == "__main__":  # pragma: no cover
     from doctest import FAIL_FAST, testfile
