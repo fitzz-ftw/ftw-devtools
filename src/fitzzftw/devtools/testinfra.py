@@ -308,7 +308,7 @@ if __name__ == "__main__": # pragma: no cover
     
     # Pfad zu den dokumentierenden Tests
     testfiles_dir = Path(__file__).parents[3] / "doc/source/devel"
-    test_file = testfiles_dir / "get_started_testinfra.rst"
+    test_file = testfiles_dir / "get_started_ftw_testinfra.rst"
     
     if test_file.exists():
         print(f"--- Running Doctest for {test_file.name} ---")
