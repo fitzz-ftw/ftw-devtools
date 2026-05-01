@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### [0.2.1]
+
+## Fixed
+- **Documentation**: Fixed wrong filename.
+
+
 ## [0.2.0] - 2026-05-01
 
 ### Removed
