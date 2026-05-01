@@ -133,7 +133,7 @@ What happend if the file to copy does not exists:
 >>> _ = env.copy2cache("ftw", "non_existing_file.txt") #doctest: +ELLIPSIS
 Traceback (most recent call last):
     ...
-FileNotFoundError: Source file non_existing_file.txt not found in .../testhome/testinput
+FileNotFoundError: Source file non_existing_file.txt not found in ...testinput
 
 Copy Operations
 ----------------
@@ -150,7 +150,7 @@ If the source file not exists:
 >>> _ = env.copy2cwd("non_existing_file.txt") #doctest: +ELLIPSIS
 Traceback (most recent call last):
     ...
-FileNotFoundError: Source file non_existing_file.txt not found in .../testhome/testinput
+FileNotFoundError: Source file non_existing_file.txt not found in ...testinput
 
 And the other is to copy a file from CWD to another persistent directory
 named 'testdocinc'. This directory should although be in the repository,
@@ -170,7 +170,7 @@ will get:
 Traceback (most recent call last):
     ...
 FileNotFoundError: Source file for doc include not 
-    found: .../testhome/testoutput/non_existing_file.txt
+    found: ...non_existing_file.txt
 
 
 
