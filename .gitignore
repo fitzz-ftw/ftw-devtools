@@ -56,3 +56,6 @@ changelog*.txt
 
 #mypy
 reports
+
+#Esbonio
+_build
