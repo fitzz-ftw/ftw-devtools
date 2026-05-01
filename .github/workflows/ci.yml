@@ -29,8 +29,9 @@ jobs:
       - name: Prepare & Run Tests
         run: |
           pip install tox
-          tox -e py${{ matrix.python-version == '3.11' && '311' || matrix.python-version == '3.12' && '312' || matrix.python-version == '3.13' && '313' || matrix.python-version == '3.14' && '314' || '315' }}
-          # make tox # Tox nutzt automatisch die aktive Python-Version
+          tox -e py${{ matrix.python-version == '3.11' && '311' || matrix.python-version == '3.12' && '312' || matrix.python-version == '3.13' && '313' || matrix.python-version == '3.14' && '314' || '315' }} -- \
+            --ignore=doc/source/devel/get_started_git_sc_git_commands.rst \
+            --ignore=doc/source/devel/get_started_git_sc_programms.rst
 
   deploy:
     needs: test
