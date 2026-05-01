@@ -48,24 +48,6 @@ The 'testinput' directory is meant for static files from Git
 >>> env.input_dir.name
 'testinput'
 
-The 'testinput' directory can be set to readonly:
-
->>> env.input_readonly
-False
-
->>> env.input_readonly=True
->>> env.input_readonly
-True
-
-**Notice:** You have to set it at the end of the file to ``False``, this 
-changed the real rights of the directory. 
-
->>> env.input_readonly=False
->>> env.input_readonly
-False
-
-
-
 Isolation from the System
 -------------------------
 

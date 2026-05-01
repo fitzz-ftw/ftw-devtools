@@ -41,8 +41,8 @@ class TestHomeEnvironment:
         self._output_dir = self._base_dir / "testoutput"
         self._doc_inc = self._base_dir / "testdocinc"
         self._orig_cwd = Path.cwd()
-        self._orig_env:dict[str,str] = {}
-        self._do_not_clean=False
+        self._orig_env: dict[str, str] = {}
+        self._do_not_clean = False
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(base_dir={self._base_dir!r})"
@@ -78,26 +78,6 @@ class TestHomeEnvironment:
         Writable directory for test execution **(ro)**.
         """
         return self._output_dir
-
-    @property
-    def input_readonly(self) -> bool:
-        """
-        Control the write permissions of the testinput directory **(rw)**.
-
-        :param value: Set to True to make the directory read-only, False for writable (Setter).
-        """
-        return not os.access(self.input_dir, os.W_OK)
-
-    @input_readonly.setter
-    def input_readonly(self, value: bool) -> None:
-        """
-        Control the write permissions of the testinput directory **(rw)**.
-
-        :param value: Set to True to make the directory read-only, False for writable.
-        :raises OSError: If the file mode cannot be changed (Setter).
-        """
-        mode = 0o555 if value else 0o755
-        self.input_dir.chmod(mode)
 
     @property
     def do_not_clean(self) -> bool:
@@ -155,7 +135,7 @@ class TestHomeEnvironment:
         os.chdir(self.output_dir)
 
     def _copy_to_user_dir(
-        self, app_name: str, source_name: str, target_name: str|None, get_path_func
+        self, app_name: str, source_name: str, target_name: str | None, get_path_func
     ) -> Path:
         """
         Internal helper for deploying files from testinput to user directories.
@@ -179,7 +159,7 @@ class TestHomeEnvironment:
         shutil.copy2(source_path, target_path)
         return target_path
 
-    def copy2config(self, app_name: str, source_name: str, target_name: str|None = None) -> Path:
+    def copy2config(self, app_name: str, source_name: str, target_name: str | None = None) -> Path:
         """
         Copy a file from testinput to the OS-specific user config directory.
 
@@ -191,7 +171,7 @@ class TestHomeEnvironment:
         """
         return self._copy_to_user_dir(app_name, source_name, target_name, user_config_path)
 
-    def copy2data(self, app_name: str, source_name: str, target_name: str|None = None) -> Path:
+    def copy2data(self, app_name: str, source_name: str, target_name: str | None = None) -> Path:
         """
         Copy a file from testinput to the OS-specific user data directory.
 
@@ -203,7 +183,7 @@ class TestHomeEnvironment:
         """
         return self._copy_to_user_dir(app_name, source_name, target_name, user_data_path)
 
-    def copy2cache(self, app_name: str, source_name: str, target_name: str|None = None) -> Path:
+    def copy2cache(self, app_name: str, source_name: str, target_name: str | None = None) -> Path:
         """
         Copy a file from testinput to the OS-specific user cache directory.
 
@@ -215,7 +195,7 @@ class TestHomeEnvironment:
         """
         return self._copy_to_user_dir(app_name, source_name, target_name, user_cache_path)
 
-    def copy2cwd(self, source_name: str, target_name: str|None = None) -> Path:
+    def copy2cwd(self, source_name: str, target_name: str | None = None) -> Path:
         """
         Copy a file from testinput directly to the current working directory.
 
@@ -275,8 +255,8 @@ class TestHomeEnvironment:
         Remove all files and directories from the simulated HOME except testinput.
 
         This method cleans the sandbox while preserving the static input files
-        required for further tests. The cleaning process can be suppressed by 
-        setting the property **do_not_clean** to True. If the property is 
+        required for further tests. The cleaning process can be suppressed by
+        setting the property **do_not_clean** to True. If the property is
         active, calling this method will have no effect on the file system.
         """
         if self.do_not_clean:
@@ -291,25 +271,24 @@ class TestHomeEnvironment:
                 pass
             else:
                 item.unlink()
-        
 
 
 # Hier den Code einfügen
 
-if __name__ == "__main__": # pragma: no cover
+if __name__ == "__main__":  # pragma: no cover
     from doctest import FAIL_FAST, testfile
-    
+
     be_verbose = False
     be_verbose = True
     option_flags = 0
     option_flags = FAIL_FAST
     test_sum = 0
     test_failed = 0
-    
+
     # Pfad zu den dokumentierenden Tests
     testfiles_dir = Path(__file__).parents[3] / "doc/source/devel"
-    test_file = testfiles_dir / "get_started_ftw_testinfra.rst"
-    
+    test_file = testfiles_dir / "get_started_ftw_testinfra.ci.rst"
+
     if test_file.exists():
         print(f"--- Running Doctest for {test_file.name} ---")
         doctestresult = testfile(
