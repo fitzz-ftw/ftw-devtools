@@ -11,7 +11,7 @@ CLI argument parsing with a robust base class for git tools. (rw)
 
 import shutil
 import sys
-from argparse import ArgumentError, ArgumentParser
+from argparse import ArgumentError, ArgumentParser, Namespace
 from pathlib import Path
 from typing import NoReturn, Sequence, cast
 
@@ -53,18 +53,19 @@ class GitBaseParser(ArgumentParser):
 
     # !METHODE - _setup_parser
     # METHODE - parse_args
-    def parse_args(self, args: Sequence[str] | None = None, namespace=None) -> GitBaseCliProtocol:
+    def parse_args(self, args: Sequence[str] | None = None, 
+                   namespace:None=None) -> GitBaseCliProtocol:
         """
         Parse arguments and validate that git is available. (rw)
         """
-        parsed_args = super().parse_args(args, namespace)
+        parsed_args = cast(GitBaseCliProtocol, super().parse_args(args, namespace))
 
         # Validierung: Existiert git und ist es ausführbar?
         git_exec = parsed_args.git_path
         if not shutil.which(git_exec):
             raise ArgumentError(None,f"Git executable '{git_exec}' not found or not executable.")
 
-        return cast(GitBaseCliProtocol, parsed_args)
+        return parsed_args
 
     # !METHODE - parse_args
     # METHODE - error

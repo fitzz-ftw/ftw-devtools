@@ -41,7 +41,7 @@ class TestHomeEnvironment:
         self._output_dir = self._base_dir / "testoutput"
         self._doc_inc = self._base_dir / "testdocinc"
         self._orig_cwd = Path.cwd()
-        self._orig_env = {}
+        self._orig_env:dict[str,str] = {}
         self._do_not_clean=False
 
     def __repr__(self) -> str:

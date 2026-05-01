@@ -53,3 +53,6 @@ doc/build_old_theme/coverage/python.txt
 old_code_snippets
 git_dif*
 changelog*.txt
+
+#mypy
+reports

@@ -10,7 +10,7 @@ supported Python versions (3.11 - 3.15).
    :maxdepth: 1
    :caption: Module Guides:
 
-   devel/get_started_ftw_testinfra
-   devel/get_started_git_sc_cli_parser
-   devel/get_started_git_sc_git_commands
-   devel/get_started_git_sc_programms
+   devel/get_started_ftw_testinfra.ci
+   devel/get_started_git_sc_cli_parser.ci
+   devel/get_started_git_sc_git_commands.noci
+   devel/get_started_git_sc_programms.noci
