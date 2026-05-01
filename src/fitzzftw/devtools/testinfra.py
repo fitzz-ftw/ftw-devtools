@@ -97,7 +97,7 @@ class TestHomeEnvironment:
         :raises OSError: If the file mode cannot be changed (Setter).
         """
         mode = 0o555 if value else 0o755
-        os.chmod(self.input_dir, mode)
+        self.input_dir.chmod(mode)
 
     @property
     def do_not_clean(self) -> bool:
