@@ -33,7 +33,7 @@ To get the log entries you have to use
 >>> from fitzzftw.devtools.git_shortcuts.git_commands import get_log_stat
 
 >>> print(get_log_stat("v0.0.1", "v0.1.0")) #doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-commit: 7884a0f  (tag: v0.1.0, ...)
+commit: 7884a0f  (tag: v0.1.0...)
 merge: development into main (v0.0.1)
 <BLANKLINE>
 Consolidate the initial development of ftw-devtools.
