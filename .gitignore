@@ -22,6 +22,8 @@ doc/orig
 
 # Doctest generated files
 doc/source/devel/testhome/.config
+doc/source/devel/testhome/.local
+doc/source/devel/testhome/.cache
 doc/source/devel/testhome/testoutput/*
 
 
@@ -50,3 +52,7 @@ doc/build_old_theme/coverage/python.txt
 # Old Code Snippets
 old_code_snippets
 git_dif*
+changelog*.txt
+
+#mypy
+reports

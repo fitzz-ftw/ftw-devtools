@@ -51,6 +51,9 @@ Repository = "https://github.com/fitzz-ftw/ftw-devtools.git"
 Issues = "https://github.com/fitzz-ftw/ftw-devtools/issues"
 Changelog = "https://github.com/fitzz-ftw/ftw-devtools/blob/main/CHANGELOG.md"
 
+[project.scripts]
+ftwchangelog = "fitzzftw.devtools.git_shortcuts.programms:prog_ftwchangelog"
+
 [project.optional-dependencies]
 doc = [
   "sphinx < 9.0.0",
@@ -95,7 +98,7 @@ quote-style = "double"
 [tool.pytest.ini_options]
 # Pytest-Optionen für die Testausführung
 addopts = [
-  "--doctest-glob=get_started_*.rst",
+  "--doctest-glob=get_started_*.*.rst",
   "--cov-report=term",
   "--cov-report=html",
 ]
@@ -118,6 +121,8 @@ exclude_also = [
   "if *__name__ *=*[\"']__main__.*",
   "# for future use",
   "# not Windows testable",
+  "# py 3.11 only no cover",
+  "# not py 3.11 no cover"
 ]
 fail_under = 40
 show_missing = true

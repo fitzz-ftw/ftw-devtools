@@ -18,6 +18,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
@@ -27,8 +29,8 @@ jobs:
       - name: Prepare & Run Tests
         run: |
           pip install tox
-          tox -e py${{ matrix.python-version == '3.11' && '311' || matrix.python-version == '3.12' && '312' || matrix.python-version == '3.13' && '313' || matrix.python-version == '3.14' && '314' || '315' }}
-          # make tox # Tox nutzt automatisch die aktive Python-Version
+          tox -e ci
+          # tox -e py${{ matrix.python-version == '3.11' && '311' || matrix.python-version == '3.12' && '312' || matrix.python-version == '3.13' && '313' || matrix.python-version == '3.14' && '314' || '315' }} 
 
   deploy:
     needs: test

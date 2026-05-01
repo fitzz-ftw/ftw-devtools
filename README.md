@@ -8,6 +8,11 @@
 * **TestHomeEnvironment**: A robust sandbox that redirects `HOME` and neutralizes `XDG` environment variables to isolate the developer's actual system.
 * **Filesystem Orchestration**: Helpers to deploy configuration, data, and cache files into simulated user directories.
 * **Doc-Include Integration**: Seamlessly copy test-generated artifacts into your documentation build.
+* **Git Shortcuts**: High-level API and CLI tools to streamline common Git workflows and changelog generation.
+
+## CLI Tools
+The package includes several command-line utilities:
+* `ftwchangelog`: Generates a clean, formatted changelog since the last tag or a specific reference.
 
 ## Installation
 ```bash

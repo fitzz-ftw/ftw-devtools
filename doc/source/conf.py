@@ -222,12 +222,13 @@ language = "en"
 
 # -- General configuration ---------------------------------------------------
 extensions = [
-    "sphinx.ext.autodoc",       # Zuerst die Basis
+    "sphinx.ext.autodoc",  # Zuerst die Basis
     "sphinx.ext.intersphinx",  # Wichtig für Cross-Refs
     "sphinx.ext.autosummary",
-    "myst_parser",             # Falls du Markdown nutzt
-    "sphinxarg.ext",           # Das "tote Pferd" erst jetzt laden
+    "myst_parser",  # Falls du Markdown nutzt
+    "sphinxarg.ext",  # Das "tote Pferd" erst jetzt laden
     "autoclasstoc",
+    "sphinxarg.ext",
     "sphinx.ext.coverage",
     "sphinx.ext.viewcode",
     "sphinx_copybutton",
@@ -286,7 +287,6 @@ toc_object_entries_show_parents = "hide"
 intersphinx_mapping = {
     "python": (f"https://docs.python.org/{sys.version_info.major}.{sys.version_info.minor}", None),
     "platformdirs": ("https://platformdirs.readthedocs.io/en/latest/", None),
-    # "crygraph":("https://cryptography.io/en/latest/", None),
 }
 
 #SECTION - Options for ePub output -------------------------------------------------
@@ -409,7 +409,10 @@ autosummary_imported_members = False
 autosummary_ignore_module_all = True
 autosummary_context = {}
 
-inherit_diagramm: list[str] = []
+inherit_diagramm: list[str] = [
+    "fitzzftw.devtools.git_shortcuts.cli_parser",
+    "fitzzftw.devtools.git_shortcuts.protocols",
+]
 exclude_inherit_diagramm: list[str] = []
 
 class_extention_context = {
