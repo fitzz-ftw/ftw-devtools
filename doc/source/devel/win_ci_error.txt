@@ -1,0 +1,129 @@
+Errormessage from Windows if TesthomeEnvironment ist used in Unit Test.
+=========================================================================
+
+=================================== ERRORS ====================================
+______ ERROR at setup of test_prog_ca_root_singing_success_dbdir_exists _______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A979732210>
+
+    @pytest.fixture
+    def ca_test_env(monkeypatch):
+        # 1. Pfad zum realen Test-Verzeichnis (relativ zum Projekt-Root)
+        # Wir stellen sicher, dass wir den Pfad korrekt auflösen
+        project_root = Path(__file__).parent.parent
+        testhome_path = project_root / "doc" / "source" / "devel" / "testhome"
+    
+        from fitzzftw.devtools.testinfra import TestHomeEnvironment
+    
+        env = TestHomeEnvironment(testhome_path)
+    
+        # 2. Setup ausführen (bereitet die Verzeichnisse am realen Ort vor)
+>       env.setup(True)
+
+D:\a\ftw-pki-caroot-signer\ftw-pki-caroot-signer\tests\test_programms.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+D:\a\ftw-pki-caroot-signer\ftw-pki-caroot-signer\.tox\py311\Lib\site-packages\fitzzftw\devtools\testinfra.py:113: in setup
+    shutil.rmtree(self.output_dir)
+C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\shutil.py:787: in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\shutil.py:638: in _rmtree_unsafe
+    onerror(os.rmdir, path, sys.exc_info())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('D:/a/ftw-pki-caroot-signer/ftw-pki-caroot-signer/doc/source/devel/testhome/testoutput')
+onerror = <function rmtree.<locals>.onerror at 0x000001A979770F40>
+
+    def _rmtree_unsafe(path, onerror):
+        try:
+            with os.scandir(path) as scandir_it:
+                entries = list(scandir_it)
+        except OSError:
+            onerror(os.scandir, path, sys.exc_info())
+            entries = []
+        for entry in entries:
+            fullname = entry.path
+            if _rmtree_isdir(entry):
+                try:
+                    if entry.is_symlink():
+                        # This can only happen if someone replaces
+                        # a directory with a symlink after the call to
+                        # os.scandir or entry.is_dir above.
+                        raise OSError("Cannot call rmtree on a symbolic link")
+                except OSError:
+                    onerror(os.path.islink, fullname, sys.exc_info())
+                    continue
+                _rmtree_unsafe(fullname, onerror)
+            else:
+                try:
+                    os.unlink(fullname)
+                except OSError:
+                    onerror(os.unlink, fullname, sys.exc_info())
+        try:
+>           os.rmdir(path)
+E           PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'D:\\a\\ftw-pki-caroot-signer\\ftw-pki-caroot-signer\\doc\\source\\devel\\testhome\\testoutput'
+
+C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\shutil.py:636: PermissionError
+_________ ERROR at setup of test_prog_ca_root_singing_validation_fail _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A9797D8E10>
+
+    @pytest.fixture
+    def ca_test_env(monkeypatch):
+        # 1. Pfad zum realen Test-Verzeichnis (relativ zum Projekt-Root)
+        # Wir stellen sicher, dass wir den Pfad korrekt auflösen
+        project_root = Path(__file__).parent.parent
+        testhome_path = project_root / "doc" / "source" / "devel" / "testhome"
+    
+        from fitzzftw.devtools.testinfra import TestHomeEnvironment
+    
+        env = TestHomeEnvironment(testhome_path)
+    
+        # 2. Setup ausführen (bereitet die Verzeichnisse am realen Ort vor)
+>       env.setup(True)
+
+D:\a\ftw-pki-caroot-signer\ftw-pki-caroot-signer\tests\test_programms.py:25: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+D:\a\ftw-pki-caroot-signer\ftw-pki-caroot-signer\.tox\py311\Lib\site-packages\fitzzftw\devtools\testinfra.py:113: in setup
+    shutil.rmtree(self.output_dir)
+C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\shutil.py:787: in rmtree
+    return _rmtree_unsafe(path, onerror)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\shutil.py:638: in _rmtree_unsafe
+    onerror(os.rmdir, path, sys.exc_info())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('D:/a/ftw-pki-caroot-signer/ftw-pki-caroot-signer/doc/source/devel/testhome/testoutput')
+onerror = <function rmtree.<locals>.onerror at 0x000001A9797A4360>
+
+    def _rmtree_unsafe(path, onerror):
+        try:
+            with os.scandir(path) as scandir_it:
+                entries = list(scandir_it)
+        except OSError:
+            onerror(os.scandir, path, sys.exc_info())
+            entries = []
+        for entry in entries:
+            fullname = entry.path
+            if _rmtree_isdir(entry):
+                try:
+                    if entry.is_symlink():
+                        # This can only happen if someone replaces
+                        # a directory with a symlink after the call to
+                        # os.scandir or entry.is_dir above.
+                        raise OSError("Cannot call rmtree on a symbolic link")
+                except OSError:
+                    onerror(os.path.islink, fullname, sys.exc_info())
+                    continue
+                _rmtree_unsafe(fullname, onerror)
+            else:
+                try:
+                    os.unlink(fullname)
+                except OSError:
+                    onerror(os.unlink, fullname, sys.exc_info())
+        try:
+>           os.rmdir(path)
+E           PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'D:\\a\\ftw-pki-caroot-signer\\ftw-pki-caroot-signer\\doc\\source\\devel\\testhome\\testoutput'
+
+C:\hostedtoolcache\windows\Python\3.11.9\x64\Lib\shutil.py:636: PermissionError
+=============================== tests coverage ================================

@@ -30,13 +30,24 @@ class TestHomeEnvironment:
     test execution.
     """
 
-    def __init__(self, base_dir: Path):
+    def __init__(
+        self,
+        base_dir: str | Path,
+        *,
+        appname: str | None = None,
+        appauthor: str | bool | None = None,
+    ) -> None:
         """
         Initialize the environment paths.
 
         :param base_dir: Path to the directory acting as the test anchor.
+        :param appname: Name of the application for path resolution.
+        :param appauthor: Author of the application for path resolution.
         """
-        self._base_dir = base_dir.resolve()
+        self._base_dir = Path(base_dir).resolve()
+        self._appname = appname
+        self._appauthor = None
+        self.appauthor = appauthor
         self._input_dir = self._base_dir / "testinput"
         self._output_dir = self._base_dir / "testoutput"
         self._doc_inc = self._base_dir / "testdocinc"
@@ -99,6 +110,47 @@ class TestHomeEnvironment:
         """
         self._do_not_clean = bool(value)
 
+    @property
+    def appname(self) -> str|None:
+        """
+        The name of the application used for path resolution **(rw)**.
+
+        :param value: The new application name.
+        :raises TypeError: If the provided value is not a string (Setter).
+        :returns: The current application name.
+        """
+        return self._appname
+
+    @appname.setter
+    def appname(self, value: str | None) -> None:
+        """The name of the application used for path resolution **(rw)**."""
+        if value is not None and not isinstance(value, str):
+            raise TypeError("Application name must be a string or None")
+        self._appname = value
+
+    @property
+    def appauthor(self) -> str|bool|None:
+        """
+        The author of the application, critical for Windows path resolution **(rw)**.
+
+        :param value: The new application author.
+        :raises TypeError: If the provided value is not a string (Setter).
+        :returns: The current application author.
+        """
+        return self._appauthor
+
+    @appauthor.setter
+    def appauthor(self, value: str | bool | None) -> None:
+        """The author of the application, critical for Windows path resolution **(rw)**."""
+        if value is not None and not isinstance(value, (str, bool)):
+            raise TypeError("Application author must be a string, bool, or None")
+
+        # Guard: Convert True to None to match platformdirs specifications
+        if value is True:
+            self._appauthor = None
+        else:
+            self._appauthor = value
+
     def setup(self, clean_output: bool = True) -> None:
         """
         Prepare the environment, redirect HOME, and switch to output_dir.
@@ -135,7 +187,13 @@ class TestHomeEnvironment:
         os.chdir(self.output_dir)
 
     def _copy_to_user_dir(
-        self, app_name: str, source_name: str, target_name: str | None, get_path_func
+        self,
+        app_name: str | None,
+        source_name: str,
+        target_name: str | None,
+        get_path_func,
+        *,
+        app_author: str | None = None,
     ) -> Path:
         """
         Internal helper for deploying files from testinput to user directories.
@@ -144,7 +202,8 @@ class TestHomeEnvironment:
         :param source_name: Filename inside input_dir.
         :param target_name: Optional new name at the destination.
         :param get_path_func: Function to retrieve the target platform path.
-        :raises FileNotFoundError: If the source file is missing.
+        :param app_author: Author of the application (required for Windows).
+        :raises FileNotFoundError: If the source file is missing in input_dir.
         :raises OSError: If the copy operation fails.
         :returns: The path to the newly created file.
         """
@@ -152,48 +211,56 @@ class TestHomeEnvironment:
         if not source_path.exists():
             raise FileNotFoundError(f"Source file {source_name} not found in {self.input_dir}")
 
-        target_dir = get_path_func(app_name)
+        # Use property as fallback if keyword argument is not provided
+        author = app_author or self.appauthor
+        appname = app_name or self.appname
+
+        target_dir = get_path_func(appname=appname, appauthor=author)
+
         target_dir.mkdir(parents=True, exist_ok=True)
         target_path = target_dir / (target_name or source_name)
 
         shutil.copy2(source_path, target_path)
         return target_path
 
-    def copy2config(self, app_name: str, source_name: str, target_name: str | None = None) -> Path:
+    def copy2config(self, source_name: str, target_name: str | None = None) -> Path:
         """
         Copy a file from testinput to the OS-specific user config directory.
 
-        :param app_name: Name of the application.
         :param source_name: Filename inside input_dir.
         :param target_name: Optional new name at the destination.
         :raises FileNotFoundError: If the source file is missing.
         :returns: The path to the newly created configuration file.
         """
-        return self._copy_to_user_dir(app_name, source_name, target_name, user_config_path)
+        return self._copy_to_user_dir(
+            self.appname, source_name, target_name, user_config_path, app_author=self.appauthor
+        )
 
-    def copy2data(self, app_name: str, source_name: str, target_name: str | None = None) -> Path:
+    def copy2data(self, source_name: str, target_name: str | None = None) -> Path:
         """
         Copy a file from testinput to the OS-specific user data directory.
 
-        :param app_name: Name of the application.
         :param source_name: Filename inside input_dir.
         :param target_name: Optional new name at the destination.
         :raises FileNotFoundError: If the source file is missing.
         :returns: The path to the newly created data file.
         """
-        return self._copy_to_user_dir(app_name, source_name, target_name, user_data_path)
+        return self._copy_to_user_dir(
+            self.appname, source_name, target_name, user_data_path, app_author=self.appauthor
+        )
 
-    def copy2cache(self, app_name: str, source_name: str, target_name: str | None = None) -> Path:
+    def copy2cache(self, source_name: str, target_name: str | None = None) -> Path:
         """
         Copy a file from testinput to the OS-specific user cache directory.
 
-        :param app_name: Name of the application.
         :param source_name: Filename inside input_dir.
         :param target_name: Optional new name at the destination.
         :raises FileNotFoundError: If the source file is missing.
         :returns: The path to the newly created cache file.
         """
-        return self._copy_to_user_dir(app_name, source_name, target_name, user_cache_path)
+        return self._copy_to_user_dir(
+            self.appname, source_name, target_name, user_cache_path, app_author=self.appauthor
+        )
 
     def copy2cwd(self, source_name: str, target_name: str | None = None) -> Path:
         """
@@ -203,8 +270,9 @@ class TestHomeEnvironment:
         directly into the active test sandbox.
 
         :param source_name: Filename inside input_dir.
-        :param target_name: Optional new name in the current directory.
+        :param target_name: Optional new name or relative path at the destination.
         :raises FileNotFoundError: If the source file is missing.
+        :raises OSError: If the copy operation or directory creation fails.
         :returns: The path to the newly created file in the CWD.
         """
         source_path = self.input_dir / source_name
@@ -212,6 +280,8 @@ class TestHomeEnvironment:
             raise FileNotFoundError(f"Source file {source_name} not found in {self.input_dir}")
 
         target_path = Path.cwd() / (target_name or source_name)
+        # Ensure all parent directories of the target path exist
+        target_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source_path, target_path)
         return target_path
 
@@ -225,9 +295,10 @@ class TestHomeEnvironment:
         CWD is cleaned up later.
 
         :param filename: Name or path of the source file in the CWD.
-        :param target_name: Optional new name for the destination file.
-        :return: The path to the copied file in the 'testdocinc' directory.
+        :param target_name: Optional new name or relative path at the destination.
         :raises FileNotFoundError: If the source file does not exist in the CWD.
+        :raises OSError: If the copy operation or directory creation fails.
+        :returns: The path to the copied file in the 'testdocinc' directory.
         """
         source = Path.cwd() / filename
         if not source.exists():
@@ -238,7 +309,8 @@ class TestHomeEnvironment:
 
         target_filename = target_name if target_name else source.name
         target_path = self._doc_inc / target_filename
-
+        # Ensure all parent directories of the target path exist
+        target_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target_path)
         return target_path
 
@@ -252,7 +324,7 @@ class TestHomeEnvironment:
 
     def clean_home(self) -> None:
         """
-        Remove all files and directories from the simulated HOME except testinput.
+        Remove all files and directories from the simulated HOME except testinput and testoutput.
 
         This method cleans the sandbox while preserving the static input files
         required for further tests. The cleaning process can be suppressed by
@@ -271,9 +343,18 @@ class TestHomeEnvironment:
                 pass
             else:
                 item.unlink()
+    
+    def clean_output(self) -> None:
+        """
+        Remove all files and directories from the testoutput directory.
+        """
+        for item in self.output_dir.iterdir():
+            if item.is_dir():
+                shutil.rmtree(item)
+            else:
+                item.unlink()
 
 
-# Hier den Code einfügen
 
 if __name__ == "__main__":  # pragma: no cover
     from doctest import FAIL_FAST, testfile
