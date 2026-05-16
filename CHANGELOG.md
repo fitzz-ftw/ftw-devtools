@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2026-05-16
+
+### Added
+- `TestHomeEnvironment` now supports `appname` and `appauthor` as instance properties for platform-independent path resolution (crucial for Windows systems).
+- Automatic creation of missing parent directories (`mkdir -p`) within `copy2cwd()` and `cwd2doc_inc()` methods.
+- New `TestHomeEnvironment.clean_output()` method to programmatically purge the test sandbox output directory.
+
+### Changed
+- **Breaking Change (API Refactoring):** The `copy2config()`, `copy2data()`, and `copy2cache()` methods no longer accept an explicit application name parameter, relying on the centralized instance properties instead.
+- Renamed documentation and CLI reference files for Git shortcuts from `ftw_changelog` to `cli_ftw_changelog`.
+
+### Fixed
+- Stabilized CI test execution by introducing a dedicated `tox -e ci` target to prevent the test runner from processing local `*.noci.rst` documentation examples.
+
 ## [0.2.1]
 
 ### Fixed

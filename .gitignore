@@ -61,3 +61,4 @@ reports
 _build
 git-diff.txt
 coverage.xml
+git-log.txt
