@@ -21,6 +21,6 @@ Overview of Tools
    :caption: User Manuals
    :hidden:
 
-   ftw_changelog
+   cli_ftw_changelog
 
 

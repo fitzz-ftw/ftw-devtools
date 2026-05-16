@@ -20,10 +20,44 @@ we use a directory within our documentation structure.
 Define the anchor for our test environment
 
 >>> base_path = Path("doc/source/devel/testhome")
->>> env = TestHomeEnvironment(base_path)
+>>> env = TestHomeEnvironment(base_path, appname="test")
 >>> env.setup()
 >>> env #doctest: +ELLIPSIS
 TestHomeEnvironment(base_dir=...Path('...doc/source/devel/testhome'))
+
+>>> env.appname
+'test'
+
+>>> env.appname = 234
+Traceback (most recent call last):
+    ...
+TypeError: Application name must be a string or None
+
+>>> env.appname = "ftw"
+
+>>> env.appauthor is None
+True
+
+>>> env.appauthor = 789
+Traceback (most recent call last):
+    ...
+TypeError: Application author must be a string, bool, or None
+
+>>> env.appauthor = False
+
+>>> env.appauthor
+False
+
+>>> env.appauthor = True
+
+>>> env.appauthor is None
+True
+
+>>> env.appauthor = "Big in Japan"
+
+>>> env.appauthor
+'Big in Japan'
+
 
 This will give you a clean 'output' directory or CWD.
 If you need the content of this directory, use
@@ -88,7 +122,7 @@ in your ``testinput`` folder.
 This copies: testhome/testinput/config_v1.toml 
 to: testhome/.config/ftw/patch.toml (on Linux)
     
->>> target_path = env.copy2config("ftw", "config_v1.toml", "patch.toml")
+>>> target_path = env.copy2config("config_v1.toml", "patch.toml")
 >>> target_path.as_posix() #doctest: +ELLIPSIS
 '.../ftw/patch.toml'
 
@@ -96,7 +130,7 @@ Beside the ``config`` directory there are other user specific directories.
 
 One is the shared data directory.
 
->>> shared_data = env.copy2data("ftw", "test_data_file.txt")
+>>> shared_data = env.copy2data("test_data_file.txt")
 >>> shared_data.as_posix()   #doctest: +ELLIPSIS 
 '.../ftw/test_data_file.txt'
 
@@ -111,7 +145,7 @@ False
 
 And the user specific 'cache' directory:
 
->>> cached_file = env.copy2cache("ftw", "test_cache_file.txt")
+>>> cached_file = env.copy2cache("test_cache_file.txt")
 
 To prevent to do clening your HOME directory accidantly you can use:
 
@@ -130,7 +164,7 @@ True
 
 What happend if the file to copy does not exists:
 
->>> _ = env.copy2cache("ftw", "non_existing_file.txt") #doctest: +ELLIPSIS
+>>> _ = env.copy2cache("non_existing_file.txt") #doctest: +ELLIPSIS
 Traceback (most recent call last):
     ...
 FileNotFoundError: Source file non_existing_file.txt not found in ...testinput
@@ -144,6 +178,8 @@ Copy from the 'input' director into the CWD.
 
 >>> new_file = env.copy2cwd("testcopy.txt")
 >>> new_renamed_file = env.copy2cwd("testcopy.txt", "copytest.txt")
+
+>>> file_in_dir = env.copy2cwd("testcopy.txt", "new_dir/copytest.txt")
 
 If the source file not exists:
 
@@ -185,6 +221,8 @@ This will give you a clean 'output' directory or CWD.
 If you need the content of this directory, use
 
 >>> env.setup(clean_output = False)
+
+>>> env.clean_output()
 
 At the end of the doctest, we restore the original system state.
 
