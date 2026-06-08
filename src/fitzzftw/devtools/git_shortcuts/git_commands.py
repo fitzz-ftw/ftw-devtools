@@ -62,7 +62,6 @@ def get_log_stat(start_ref: str, end_ref: str = "HEAD", git_exec: str = "git") -
     return run_git_command(["log", f"{start_ref}..{end_ref}", 
                             "--format=commit: %h %d%n%B"], git_exec=git_exec)
 
-
 # !FUNCTION - get_log_stat
 
 

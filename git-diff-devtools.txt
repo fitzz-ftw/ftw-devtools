@@ -1,0 +1,207 @@
+Total-Coverage: 72.33%
+-------------------- diff --------------------
+diff --git a/doc/source/devel/get_started_ftw_testinfra.ci.rst b/doc/source/devel/get_started_ftw_testinfra.ci.rst
+index 342085a..faffec2 100644
+--- a/doc/source/devel/get_started_ftw_testinfra.ci.rst
++++ b/doc/source/devel/get_started_ftw_testinfra.ci.rst
+@@ -23,7 +23,7 @@ Define the anchor for our test environment
+ >>> env = TestHomeEnvironment(base_path, appname="test")
+ >>> env.setup()
+ >>> env #doctest: +ELLIPSIS
+-TestHomeEnvironment(base_dir=...Path('...doc/source/devel/testhome'))
++TestHomeEnvironment(base_dir='...doc/source/devel/testhome')
+ 
+ >>> env.appname
+ 'test'
+diff --git a/pyproject.toml b/pyproject.toml
+index fcc00d9..b776de4 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -52,6 +52,8 @@ Changelog = "https://github.com/fitzz-ftw/ftw-devtools/blob/main/CHANGELOG.md"
+ 
+ [project.scripts]
+ ftwchangelog = "fitzzftw.devtools.git_shortcuts.programms:prog_ftwchangelog"
++ftwcommitlog = "fitzzftw.devtools.coverage_script:prog_commit_log"
++ftwdepolylog = "fitzzftw.devtools.coverage_script:prog_deploy_log"
+ 
+ [project.optional-dependencies]
+ doc = [
+diff --git a/src/fitzzftw/devtools/git_shortcuts/git_commands.py b/src/fitzzftw/devtools/git_shortcuts/git_commands.py
+index 64802ca..dd6f174 100644
+--- a/src/fitzzftw/devtools/git_shortcuts/git_commands.py
++++ b/src/fitzzftw/devtools/git_shortcuts/git_commands.py
+@@ -62,7 +62,6 @@ def get_log_stat(start_ref: str, end_ref: str = "HEAD", git_exec: str = "git") -
+     return run_git_command(["log", f"{start_ref}..{end_ref}", 
+                             "--format=commit: %h %d%n%B"], git_exec=git_exec)
+ 
+-
+ # !FUNCTION - get_log_stat
+ 
+ 
+diff --git a/src/fitzzftw/devtools/testinfra.py b/src/fitzzftw/devtools/testinfra.py
+index 73b89a9..2bb7d93 100644
+--- a/src/fitzzftw/devtools/testinfra.py
++++ b/src/fitzzftw/devtools/testinfra.py
+@@ -13,6 +13,7 @@ Modul testinfra documentation
+ import os
+ import shutil
+ from pathlib import Path
++from typing import Literal
+ 
+ from platformdirs import user_cache_path, user_config_path, user_data_path
+ 
+@@ -46,7 +47,7 @@ class TestHomeEnvironment:
+         """
+         self._base_dir = Path(base_dir).resolve()
+         self._appname = appname
+-        self._appauthor = None
++        self._appauthor: str | Literal[False] | None = None
+         self.appauthor = appauthor
+         self._input_dir = self._base_dir / "testinput"
+         self._output_dir = self._base_dir / "testoutput"
+@@ -56,16 +57,23 @@ class TestHomeEnvironment:
+         self._do_not_clean = False
+ 
+     def __repr__(self) -> str:
+-        return f"{self.__class__.__name__}(base_dir={self._base_dir!r})"
++        return f"{self.__class__.__name__}(base_dir='{self._base_dir.as_posix()}')"
+ 
+     @property
+     def docinclude(self) -> Path:
++        """
++        The path to the documentation include directory **(ro)**.
++
++        :return: Path to the doc include folder.
++        """
+         return self._doc_inc
+ 
+     @property
+     def base_dir(self) -> Path:
+         """
+         The root of the test environment **(ro)**.
++
++        :return: The base directory path.
+         """
+         return self._base_dir
+ 
+@@ -73,13 +81,35 @@ class TestHomeEnvironment:
+     def HOME(self) -> Path:
+         """
+         Alias for base_dir to provide intuitive access to the simulated HOME **(ro)**.
++
++        :return: The simulated HOME path.
+         """
+         return self.base_dir
+ 
++    @property
++    def realHOME(self)-> str:
++        """
++        Retrieve the real system HOME environment variable **(ro)**.
++
++        :return: The path of the actual system HOME.
++        """
++        return os.environ['HOME']
++
++    @property
++    def in_env(self) -> bool:
++        """
++        Check if the current HOME matches the real system HOME **(ro)**.
++
++        :return: True if in the system environment, False otherwise.
++        """
++        return self.HOME == self.realHOME
++
+     @property
+     def input_dir(self) -> Path:
+         """
+         Read-only directory containing Git-tracked test files **(ro)**.
++
++        :return: The input directory path.
+         """
+         return self._input_dir
+ 
+@@ -87,8 +117,37 @@ class TestHomeEnvironment:
+     def output_dir(self) -> Path:
+         """
+         Writable directory for test execution **(ro)**.
++
++        :return: The output directory path.
+         """
+         return self._output_dir
++    
++    @property
++    def doc_inc_dir(self)-> Path:
++        """
++        The path to the documentation include directory **(ro)**.
++
++        :return: The documentation include directory path.
++        """
++        return self._doc_inc
++
++    @property
++    def config_dir(self)-> Path:
++        """
++        The platform-specific configuration directory for the application **(ro)**.
++
++        :return: The configuration directory path.
++        """
++        return user_config_path(appname=self.appname, appauthor=self.appauthor)
++
++    @property
++    def data_dir(self)-> Path:
++        """
++        The platform-specific data directory for the application **(ro)**.
++
++        :return: The data directory path.
++        """
++        return user_data_path(appname=self.appname, appauthor=self.appauthor)
+ 
+     @property
+     def do_not_clean(self) -> bool:
+@@ -123,13 +182,19 @@ class TestHomeEnvironment:
+ 
+     @appname.setter
+     def appname(self, value: str | None) -> None:
+-        """The name of the application used for path resolution **(rw)**."""
++        """
++        The name of the application used for path resolution **(rw)**.
++
++        :param value: The new application name.
++        :raises TypeError: If the provided value is not a string (Setter).
++        :returns: The current application name.
++        """
+         if value is not None and not isinstance(value, str):
+             raise TypeError("Application name must be a string or None")
+         self._appname = value
+ 
+     @property
+-    def appauthor(self) -> str|bool|None:
++    def appauthor(self) -> str|Literal[False]|None:
+         """
+         The author of the application, critical for Windows path resolution **(rw)**.
+ 
+@@ -141,7 +206,13 @@ class TestHomeEnvironment:
+ 
+     @appauthor.setter
+     def appauthor(self, value: str | bool | None) -> None:
+-        """The author of the application, critical for Windows path resolution **(rw)**."""
++        """
++        The author of the application, critical for Windows path resolution **(rw)**.
++
++        :param value: The new application author.
++        :raises TypeError: If the provided value is not a string (Setter).
++        :returns: The current application author.
++        """
+         if value is not None and not isinstance(value, (str, bool)):
+             raise TypeError("Application author must be a string, bool, or None")
+ 
+@@ -193,7 +264,7 @@ class TestHomeEnvironment:
+         target_name: str | None,
+         get_path_func,
+         *,
+-        app_author: str | None = None,
++        app_author: str | Literal[False] | None = None,
+     ) -> Path:
+         """
+         Internal helper for deploying files from testinput to user directories.
+

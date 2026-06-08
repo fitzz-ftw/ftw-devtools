@@ -1,0 +1,34 @@
+HomeTestEnvironment:
+    __repr__:  #DONE
+        Ändern, das as_unix() ausgegeben wird.
+
+    new Property: real_HOME: #DONE
+        Gibt das echte HOME der Environmentvariablen zurück.
+        
+    new Porperty: config_path: #DONE
+        gibt den config pfad als Path() zurück.
+
+    new Property: data_path:   #DONE
+        gibt den data/public Pfad als Path() zurück.
+
+HomeTestEnvironment: #DONE
+    new Property: in_env:
+        vergleicht self.HOME mit self.realHOME.
+
+
+[ ] CI/CD-Workflow-Sync Tool entwickeln
+    - Ziel: Zentrale Wartung der GitHub-Actions-YAMLs über 15 Repos hinweg.
+    - Ansatz: Python-Skript mit PyYAML.
+    - Komponenten:
+        a) Repo-Konfiguration (Liste der Ziel-Repositories).
+        b) Vorlagen-Verzeichnis (Templates für Debian-LTS, Standard-Tests).
+        c) Logik-Modul:
+           - Einlesen via PyYAML.
+           - DeepDiff-Vergleich (via deepdiff).
+           - Automatisches Synchronisieren/Update bei Abweichung.
+    - Meilenstein 1: Prototyp-Skript, das nur vergleicht und Fehler ausgibt.
+    - Meilenstein 2: Implementierung der automatischen Überschreib-Funktion.
+    - Meilenstein 3: Integration der Container-Registry-Strategie (für Option 1).
+
+Ein Tool das alle Kombinationen der Argumente eines Programms erstellt
+und diese testet. Beispieledaten und Ergebnis werden in json gespeichert.

@@ -23,7 +23,7 @@ Define the anchor for our test environment
 >>> env = TestHomeEnvironment(base_path, appname="test")
 >>> env.setup()
 >>> env #doctest: +ELLIPSIS
-TestHomeEnvironment(base_dir=...Path('...doc/source/devel/testhome'))
+TestHomeEnvironment(base_dir='...doc/source/devel/testhome')
 
 >>> env.appname
 'test'
