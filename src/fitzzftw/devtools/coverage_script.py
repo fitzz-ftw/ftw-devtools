@@ -12,10 +12,9 @@ from coverage.exceptions import NoDataError
 
 
 def get_git_diff() -> str:
-    ret = subprocess.run(["git", "-P", "diff"], 
-                         capture_output=True,
-                         text=True)
+    ret = subprocess.run(["git", "-P", "diff"], capture_output=True, text=True)
     return str(ret.stdout)
+
 
 def get_total_coverage():
     # Lädt die .coverage Datei aus dem aktuellen Verzeichnis
@@ -32,30 +31,34 @@ def get_total_coverage():
         return -0.1
 
 
+# ('--pretty=format:"%h %s"',)
+
+
 def get_git_log():
     ret1 = subprocess.run(
-        ["git", "-P", "log", 
-         "--oneline", "--decorate", "--graph", "--all"], 
-         capture_output=True, text=True
+        ["git", "-P", "log", "--oneline", "--decorate", "--graph", "--all"],
+        capture_output=True,
+        text=True,
     )
     ret2 = subprocess.run(
-        ["git", "-P", "log", '--pretty=format:"%h %s"', "--name-status"],
+        ["git", "-P", "log", "--name-status"],
         capture_output=True,
         text=True,
     )
     return "\n".join([ret1.stdout, ret2.stdout])
 
 
-class ProjektLogs():
-
+class ProjektLogs:
     def __init__(self, argv: list[str] | None = None) -> None:
         parser = argparse.ArgumentParser()
-        parser.add_argument("src_dest_dirs",
-                            type=Path,
-                            nargs="+",
-                            default=Path("."),
-                            metavar="<working-directory>",
-                            help="Directories to work in. (Default: %(default)s)")
+        parser.add_argument(
+            "src_dest_dirs",
+            type=Path,
+            nargs="+",
+            default=Path("."),
+            metavar="<working-directory>",
+            help="Directories to work in. (Default: %(default)s)",
+        )
         parser.add_argument(
             "-o",
             "--output",
@@ -67,8 +70,8 @@ class ProjektLogs():
         )
         args = parser.parse_args(argv)
         self._work_dirs = args.src_dest_dirs
-        self._old_path=Path().cwd()
-        self._output_dir=None
+        self._old_path = Path().cwd()
+        self._output_dir = None
         if args.output_dir is not None:
             self._output_dir = self._old_path / str(args.output_dir)
             self._output_dir = self._output_dir.resolve()
@@ -91,7 +94,7 @@ class ProjektLogs():
                     else Path(".").absolute().name.split("-")[-1]
                 )
                 out_file = Path("-".join(["git", "diff", out_file_str])).with_suffix(".txt")
-                out_file = out_file if self._output_dir is None else self._output_dir/out_file
+                out_file = out_file if self._output_dir is None else self._output_dir / out_file
                 if not diff_content.strip():
                     print(f"No Changes, did not create: {out_file.relative_to(self._old_path)}")
                     continue
@@ -125,14 +128,18 @@ class ProjektLogs():
                 os.chdir(self._old_path)
 
 
-def prog_commit_log(argv:list[str]|None=None):
+def prog_commit_log(argv: list[str] | None = None) -> int:
     log = ProjektLogs(argv)
     log.run_diff()
+    return 0
 
-def pro_deploy_log(argv:list[str]|None=None):
+
+def prog_deploy_log(argv: list[str] | None = None) -> int:
     log = ProjektLogs(argv)
     log.run_log()
+    return 0
+
 
 if __name__ == "__main__":
     # prog_commit_log()
-    pro_deploy_log()
+    prog_deploy_log()

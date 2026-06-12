@@ -53,7 +53,7 @@ Changelog = "https://github.com/fitzz-ftw/ftw-devtools/blob/main/CHANGELOG.md"
 [project.scripts]
 ftwchangelog = "fitzzftw.devtools.git_shortcuts.programms:prog_ftwchangelog"
 ftwcommitlog = "fitzzftw.devtools.coverage_script:prog_commit_log"
-ftwdepolylog = "fitzzftw.devtools.coverage_script:prog_deploy_log"
+ftwdeploylog = "fitzzftw.devtools.coverage_script:prog_deploy_log"
 
 [project.optional-dependencies]
 doc = [
