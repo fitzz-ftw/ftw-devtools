@@ -12,8 +12,9 @@ from coverage.exceptions import NoDataError
 
 
 def get_git_diff() -> str:
-    ret = subprocess.run(["git", "-P", "diff"], capture_output=True, text=True)
-    return str(ret.stdout)
+    ret = subprocess.run(["git", "-P", "diff"], capture_output=True)
+    return ret.stdout.decode("utf-8", errors="replace")
+    # return str(ret.stdout)
 
 
 def get_total_coverage():
@@ -30,8 +31,6 @@ def get_total_coverage():
         print("No coverage data found.\nPlease run coverage first.")
         return -0.1
 
-
-# ('--pretty=format:"%h %s"',)
 
 
 def get_git_log():
@@ -89,9 +88,11 @@ class ProjektLogs:
                 diff_content: str = get_git_diff()
                 percentage = get_total_coverage()
                 out_file_str = (
-                    workdir.name.split("-")[-1]
+                    workdir.name
+                    # workdir.name.split("-")[-1]
                     if workdir.name != ""
-                    else Path(".").absolute().name.split("-")[-1]
+                    else Path(".").absolute().name
+                    # else Path(".").absolute().name.split("-")[-1]
                 )
                 out_file = Path("-".join(["git", "diff", out_file_str])).with_suffix(".txt")
                 out_file = out_file if self._output_dir is None else self._output_dir / out_file
@@ -112,9 +113,9 @@ class ProjektLogs:
                 os.chdir(workdir)
                 log_content: str = get_git_log()
                 out_file_str = (
-                    workdir.name.split("-")[-1]
+                    workdir.name
                     if workdir.name != ""
-                    else Path(".").absolute().name.split("-")[-1]
+                    else Path(".").absolute().name
                 )
                 out_file = Path("-".join(["git", "log", out_file_str])).with_suffix(".txt")
                 out_file = out_file if self._output_dir is None else self._output_dir / out_file

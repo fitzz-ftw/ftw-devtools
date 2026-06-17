@@ -2,6 +2,7 @@
 DEPLOY_BRANCH = main
 TAG_FILE      = TAGMESSAGE.txt
 MERGE_file    = MERGEMESSAGE.txt
+WHEEL_HOUSE	  = /python_devel/anaconda_neu/home_dev/my_pypi_dir/central
 OLD_MSG_DIR   = old_messages
 CLEAN_DIRS    = doc/build dist build .tox .pytest_cache .mypy_cache 
 
@@ -225,3 +226,6 @@ guard-master:
 		printf "Current branch is: '$(YELLOW)$$curr_branch$(NC)'\n"; \
 		exit 1; \
 	fi
+
+wheelhouse: build
+	cp dist/*.whl $(GLOBAL_WHEELHOUSE)/
