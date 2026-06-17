@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+###### [0.3.1] - 2026-06-17
+
+###### Added
+- Expand test infrastructure and utility scripts
+- Add doctest_utils.py to devtools core
+- Implement updates for testinfra API
+
+###### Changed
+- Optimize testinfra and CLI scripts for better performance
+- Update pyproject.toml metadata and dependencies
+- Refactor coverage_script.py logic
+
+###### Removed
+- Delete temporary git-diff-devtools.txt file
+
+
 ## [0.3.0] - 2026-05-16
 
 ### Added

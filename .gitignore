@@ -59,6 +59,7 @@ reports
 
 #Esbonio
 _build
-git-diff.txt
+git-diff*.txt
 coverage.xml
-git-log.txt
+git-log*.txt
+git-diff-devtools.txt
