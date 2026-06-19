@@ -169,15 +169,15 @@ class ProjektLogs:
                 out_file = out_file if self._output_dir is None else self._output_dir / out_file
                 if not diff_content.strip():
                     print(
-                        f"No Changes, did not create: "
-                        f"{out_file.absolute().relative_to(self._old_path)}"
+                        f"'No Changes, did not create: "
+                        f"{out_file.absolute().relative_to(self._old_path)}'"
                     )
                     continue
                 with out_file.open("w") as f:
                     print(f"Total-Coverage: {percentage:.2f}%", file=f)
                     print("-" * 20, "diff", "-" * 20, file=f)
                     print(diff_content, file=f)
-                    print(f"Created: {out_file.absolute().relative_to(self._old_path)}")
+                    print(f"'Created: {out_file.absolute().relative_to(self._old_path)}'")
             finally:
                 os.chdir(self._old_path)
 
@@ -200,13 +200,13 @@ class ProjektLogs:
                 out_file = out_file if self._output_dir is None else self._output_dir / out_file
                 if not log_content.strip():
                     print(
-                        f"No Changes, did not create: "
-                        f"{out_file.absolute().relative_to(self._old_path)}"
+                        f"'No Changes, did not create: "
+                        f"{out_file.absolute().relative_to(self._old_path)}'"
                     )
                     continue
                 with out_file.open("w") as f:
                     print(log_content, file=f)
-                    print(f"Created: {out_file.absolute().relative_to(self._old_path)}")
+                    print(f"'Created: {out_file.absolute().relative_to(self._old_path)}'")
             finally:
                 os.chdir(self._old_path)
 

@@ -97,11 +97,11 @@ True
 
 >>> pl=ProjektLogs([".", "-o", "doc/source/devel/testhome/testoutput"])
 
->>> pl.run_diff() # doctest: +ELLIPSIS
-Created: ...git-diff-ftw-devtools.txt
+>>> pl.run_diff() # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+'...git-diff-ftw-devtools.txt'
 
 >>> pl.run_log() # doctest: +ELLIPSIS
-Created: ...git-log-ftw-devtools.txt
+'...git-log-ftw-devtools.txt'
 
 >>> pl2=ProjektLogs([".", "-o", "doc/source/devel/testhome/testoutput"])
 >>> pl3=ProjektLogs([".", ])
@@ -115,9 +115,9 @@ Created: ...git-log-ftw-devtools.txt
 >>> g_c.get_git_diff = stub_no_content
 
 >>> pl.run_diff() # doctest: +ELLIPSIS
-No Changes, did not create: ...git-diff-ftw-devtools.txt
+'No Changes, did not create: ...git-diff-ftw-devtools.txt'
 
 >>> g_c.get_git_log = stub_no_content
 
 >>> pl.run_log() # doctest: +ELLIPSIS
-No Changes, did not create: ...git-log-ftw-devtools.txt
+'No Changes, did not create: ...git-log-ftw-devtools.txt'
