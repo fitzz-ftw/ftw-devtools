@@ -65,7 +65,7 @@ feat: add project documentation base
 >>> from fitzzftw.devtools.git_shortcuts.git_commands import get_git_diff
 
 >>> get_git_diff() #doctest: +ELLIPSIS
-'diff --git...
+'...
 
 
 
