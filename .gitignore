@@ -63,3 +63,5 @@ git-diff*.txt
 coverage.xml
 git-log*.txt
 git-diff-devtools.txt
+doc/source/devel/testdata/**
+

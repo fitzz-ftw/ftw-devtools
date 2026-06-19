@@ -2,19 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
-###### [0.3.1] - 2026-06-17
+## [0.3.2] - 2026-06-19
 
-###### Added
+### Added
+- Add documentation for doctest utilities and git program guides
+- Add coverage test database assets
+
+### Changed
+- Restructure git logging and development infrastructure
+- Update pyproject.toml and core testinfra components
+- Refactor doctest_utils and git shortcut command modules
+- Update git-commands test suite
+
+### Removed
+- Delete deprecated coverage_script.py
+
+## [0.3.1] - 2026-06-17
+
+### Added
 - Expand test infrastructure and utility scripts
 - Add doctest_utils.py to devtools core
 - Implement updates for testinfra API
 
-###### Changed
+### Changed
 - Optimize testinfra and CLI scripts for better performance
 - Update pyproject.toml metadata and dependencies
 - Refactor coverage_script.py logic
 
-###### Removed
+### Removed
 - Delete temporary git-diff-devtools.txt file
 
 

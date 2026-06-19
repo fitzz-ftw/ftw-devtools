@@ -60,15 +60,6 @@ class TestHomeEnvironment:
         return f"{self.__class__.__name__}(base_dir='{self._base_dir.as_posix()}')"
 
     @property
-    def docinclude(self) -> Path:
-        """
-        The path to the documentation include directory **(ro)**.
-
-        :return: Path to the doc include folder.
-        """
-        return self._doc_inc
-
-    @property
     def base_dir(self) -> Path:
         """
         The root of the test environment **(ro)**.
@@ -102,7 +93,7 @@ class TestHomeEnvironment:
 
         :return: True if in the system environment, False otherwise.
         """
-        return self.HOME == self.realHOME
+        return str(self.HOME) == self.realHOME
 
     @property
     def input_dir(self) -> Path:
@@ -123,7 +114,7 @@ class TestHomeEnvironment:
         return self._output_dir
     
     @property
-    def doc_inc_dir(self)-> Path:
+    def docinc_dir(self)-> Path:
         """
         The path to the documentation include directory **(ro)**.
 
@@ -406,7 +397,7 @@ class TestHomeEnvironment:
             return
 
         for item in self.base_dir.iterdir():
-            if item == self.input_dir or item == self.docinclude:
+            if item == self.input_dir or item == self.docinc_dir:
                 continue
             if item.is_dir() and item != self.output_dir:
                 shutil.rmtree(item)

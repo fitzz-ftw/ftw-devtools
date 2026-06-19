@@ -14,3 +14,4 @@ FTW Development Tools
     git_shortcuts.git_commands
     git_shortcuts.protocols
     git_shortcuts.programms
+    doctest_utils

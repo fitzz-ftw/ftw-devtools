@@ -12,7 +12,6 @@ Modul doctest_utils documentation
 import shutil
 import sys
 from pathlib import Path
-from typing import Any
 
 
 def dtprint(*entries: object, **printkw) -> None:
@@ -22,8 +21,8 @@ def dtprint(*entries: object, **printkw) -> None:
     This function bypasses standard stdout and ignores 'file' or 'flush'
     arguments passed in kwargs to ensure output always goes to stderr.
 
-    :param *entries: Objects to be printed.
-    :param **printkw: Standard print function keyword arguments (file and flush are ignored).
+    :param entries: Objects to be printed.
+    :param printkw: Standard print function keyword arguments (file and flush are ignored).
     """
     printkw.pop("file", None)
     printkw.pop("flush", None)
@@ -58,8 +57,8 @@ class NotVerbosePrint:
 class TestArtifactCollector:
     """Collects and exports test artifacts to a safe location outside HOME."""
 
-    def __init__(self, base_export_dir: Path, clean_dir:bool=True):
-        self.export_root = base_export_dir.resolve()
+    def __init__(self, base_export_dir:str| Path, clean_dir:bool=True):
+        self.export_root = Path(base_export_dir).resolve()
         if clean_dir:
             self._clean_dir()
         # Stelle sicher, dass das Zielverzeichnis existiert
@@ -100,7 +99,7 @@ if __name__ == "__main__": # pragma: no cover
     # Pfad zu den dokumentierenden Tests
     testfiles_dir = Path(__file__).parents[3] / "doc/source/devel"
     test_files = [
-        "doctest_utils.rst",
+        "get_started_doctest_utils.ci.rst",
     ]
     for file in test_files:
         test_file = testfiles_dir / file

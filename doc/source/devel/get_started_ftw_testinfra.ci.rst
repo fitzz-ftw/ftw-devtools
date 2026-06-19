@@ -58,6 +58,19 @@ True
 >>> env.appauthor
 'Big in Japan'
 
+>>> env.realHOME #doctest: +ELLIPSIS
+'...testhome'
+
+>>> env.HOME.as_posix() #doctest: +ELLIPSIS
+'...testhome'
+
+>>> env.docinc_dir.as_posix() #doctest: +ELLIPSIS
+'.../testdocinc'
+
+
+>>> env.in_env
+True
+
 
 This will give you a clean 'output' directory or CWD.
 If you need the content of this directory, use
@@ -121,7 +134,10 @@ in your ``testinput`` folder.
 
 This copies: testhome/testinput/config_v1.toml 
 to: testhome/.config/ftw/patch.toml (on Linux)
-    
+
+>>> env.config_dir.as_posix()  #doctest: +ELLIPSIS
+'.../ftw'
+
 >>> target_path = env.copy2config("config_v1.toml", "patch.toml")
 >>> target_path.as_posix() #doctest: +ELLIPSIS
 '.../ftw/patch.toml'
@@ -129,6 +145,9 @@ to: testhome/.config/ftw/patch.toml (on Linux)
 Beside the ``config`` directory there are other user specific directories.
 
 One is the shared data directory.
+
+>>> env.data_dir.as_posix()  #doctest: +ELLIPSIS
+'.../ftw'
 
 >>> shared_data = env.copy2data("test_data_file.txt")
 >>> shared_data.as_posix()   #doctest: +ELLIPSIS 
@@ -192,7 +211,7 @@ And the other is to copy a file from CWD to another persistent directory
 named 'testdocinc'. This directory should although be in the repository,
 to enable showing file content in the build documentation.
 
->>> env.docinclude.as_posix() #doctest: +ELLIPSIS
+>>> env.docinc_dir.as_posix() #doctest: +ELLIPSIS
 '...doc/source/devel/testhome/testdocinc'
 
 To copy a file to this directory use:
