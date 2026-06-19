@@ -1,5 +1,5 @@
 New Git Programms Execution
-=======================
+=============================
 
 >>> import fitzzftw.devtools.git_shortcuts.git_commands as g_c
 

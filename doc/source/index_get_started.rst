@@ -13,5 +13,6 @@ supported Python versions (3.11 - 3.15).
    devel/get_started_ftw_testinfra.ci
    devel/get_started_git_sc_cli_parser.ci
    devel/get_started_git_sc_git_commands.noci
+   devel/get_started_git_sc_programms.ci
    devel/get_started_git_sc_programms.noci
    devel/get_started_doctest_utils.ci
