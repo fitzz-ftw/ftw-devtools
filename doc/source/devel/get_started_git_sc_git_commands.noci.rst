@@ -1,5 +1,13 @@
 .. _gs_GitCommands:
 
+>>> nocovrun = globals().get("nocovrun", False)
+
+>> nocovrun
+>>> import fitzzftw.devtools.git_shortcuts.git_commands as g_c
+
+.. import get_total_coverage
+
+
 Getting Started with Git Commands
 =================================
 
@@ -54,4 +62,62 @@ feat: add project documentation base
 - Add README, CHANGELOG and index.rst
 
 
+>>> from fitzzftw.devtools.git_shortcuts.git_commands import get_git_diff
 
+>>> get_git_diff() #doctest: +ELLIPSIS
+'diff --git...
+
+
+
+>>> from pathlib import Path
+>>> from fitzzftw.devtools.testinfra import TestHomeEnvironment
+
+Define the anchor for our test environment
+
+>>> def stub_coverage():
+...    return 80
+
+>>> g_c.get_total_coverage = stub_coverage  if not nocovrun else g_c.get_total_coverage
+
+>>> from fitzzftw.devtools.git_shortcuts.git_commands import get_total_coverage
+
+
+>>> tc = get_total_coverage()  #if nocovrun else 80
+
+>>> tc > 50
+True
+
+
+>>> from fitzzftw.devtools.git_shortcuts.git_commands import get_git_log
+
+>>> get_git_log() #doctest: +ELLIPSIS
+'...tag:...'
+
+>>> from fitzzftw.devtools.git_shortcuts.git_commands import ProjektLogs
+
+>>> pl=ProjektLogs([".", "-o", "doc/source/devel/testhome/testoutput"])
+
+>>> pl.run_diff() # doctest: +ELLIPSIS
+Created: ...git-diff-ftw-devtools.txt
+
+>>> pl.run_log() # doctest: +ELLIPSIS
+Created: ...git-log-ftw-devtools.txt
+
+>>> pl2=ProjektLogs([".", "-o", "doc/source/devel/testhome/testoutput"])
+>>> pl3=ProjektLogs([".", ])
+
+>>> del pl2
+>>> del pl3
+
+>>> def stub_no_content():
+...     return ""
+
+>>> g_c.get_git_diff = stub_no_content
+
+>>> pl.run_diff() # doctest: +ELLIPSIS
+No Changes, did not create: ...git-diff-ftw-devtools.txt
+
+>>> g_c.get_git_log = stub_no_content
+
+>>> pl.run_log() # doctest: +ELLIPSIS
+No Changes, did not create: ...git-log-ftw-devtools.txt

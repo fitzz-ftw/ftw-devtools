@@ -52,8 +52,8 @@ Changelog = "https://github.com/fitzz-ftw/ftw-devtools/blob/main/CHANGELOG.md"
 
 [project.scripts]
 ftwchangelog = "fitzzftw.devtools.git_shortcuts.programms:prog_ftwchangelog"
-ftwcommitlog = "fitzzftw.devtools.coverage_script:prog_commit_log"
-ftwdeploylog = "fitzzftw.devtools.coverage_script:prog_deploy_log"
+ftwcommitlog = "fitzzftw.devtools.git_shortcuts.programms:prog_commit_log"
+ftwdeploylog = "fitzzftw.devtools.git_shortcuts.programms:prog_deploy_log"
 
 [project.optional-dependencies]
 doc = [
@@ -125,7 +125,7 @@ exclude_also = [
   "# py 3.11 only no cover",
   "# not py 3.11 no cover"
 ]
-fail_under = 40
+fail_under = 100
 show_missing = true
 #format = "text"
 #
